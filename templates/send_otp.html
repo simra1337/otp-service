@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Send OTP</title>
+        <script>
+            function submitForm() {
+                // Get the value of the mobile number input field
+                var mobileNumber = document.getElementById("mobileNumber").value;
+                // Append the mobile number to the action of the form
+                document.getElementById("sendOtpForm").action += mobileNumber;
+                // Submit the form
+                document.getElementById("sendOtpForm").submit();
+            }
+        </script>
+    </head>
+    <body>
+        <form id="sendOtpForm" action="http://localhost:5000/sendOtp/">
+            <label>Your number:</label>
+            <input id="mobileNumber" type="number">
+            <input type="button" value="Send OTP" onclick="submitForm()">
+        </form>
+    </body>
+</html>

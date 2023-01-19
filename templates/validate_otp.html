@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Validate OTP</title>
+        <script>
+            function validateOTP() {
+                let otp = document.getElementById("otp").value;
+                fetch(`/otp/${otp}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("message").innerHTML = data;
+                });
+                return false;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="message"></div>
+        <form onsubmit="return validateOTP()">
+            <input type="text" id="otp">
+            <input type="submit" value="Validate OTP">
+        </form>        
+    </body>
+</html>

@@ -3,6 +3,8 @@ import random
 from twilio.rest import Client
 from dotenv import load_dotenv
 import os
+from flask import redirect
+from flask import render_template
 
 load_dotenv()
 
@@ -13,6 +15,10 @@ app.secret_key = os.environ.get('API_SECRET_KEY') # any random string
 account_sid = os.environ.get('ACCOUNT_SID')
 auth_token = os.environ.get('AUTH_TOKEN')
 client = Client(account_sid, auth_token)
+
+@app.route('/')
+def open_index():
+    return redirect('/homepage')
 
 @app.route('/sendOtp/<mobile_number>')
 def send_otp(mobile_number):
@@ -27,7 +33,7 @@ def send_otp(mobile_number):
     session["mobile_number"] = mobile_number
     session["otp"] = otp
     print(message.sid)
-    return "OTP sent to {}".format(mobile_number)
+    return redirect('/otp')
 
 @app.route('/otp/<otp>')
 def handle_otp(otp):
@@ -38,18 +44,20 @@ def handle_otp(otp):
 
     if stored_otp:
         if stored_otp == int(otp):
-            return "Valid otp"
-            # OTP is valid
-            # Perform desired action
-            pass
+            return "OTP is valid"
         else:
-            return "Invalid otp"
-            # OTP is invalid
-            pass
+            return "Invalid OTP"
     else:
-        return "Otp Expired"
-        pass
+        return "OTP has expired"
 
+
+@app.route('/homepage')
+def homepage():
+    return render_template("send_otp.html")
+
+@app.route('/otp')
+def validate_otp_page():
+    return render_template("validate_otp.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
